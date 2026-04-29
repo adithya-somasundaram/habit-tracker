@@ -1,11 +1,12 @@
 from datetime import datetime
 
 from src.activity.model import Activity
-from src.habit.services import get_habit_mapping
 from src.helpers import pacific_timezone
 
 
 def create_activity_input(session):
+    from src.habit.services import get_habit_mapping
+
     date_str = input(
         "Enter activity date (YYYY-MM-DD) - Enter to set to today: "
     ).strip()
