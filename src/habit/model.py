@@ -2,8 +2,8 @@ from app import db
 import enum
 from datetime import datetime
 
-from sqlalchemy import Enum, Index, event, text
-from sqlalchemy.sql.schema import Column, ForeignKey
+from sqlalchemy import Enum, Index, text
+from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import Boolean, DateTime, Integer, String
 
 
