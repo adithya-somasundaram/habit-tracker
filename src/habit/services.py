@@ -1,15 +1,23 @@
-from sqlalchemy import Date
-
-from habit.model import Habit, UnitType, OperationType, RangeType
+from src.habit.model import Habit, UnitType, OperationType, RangeType
 
 
 def view_habits(session, active_only=True):
-    query = session.query(Habit.name, Habit.created_at.cast(Date))
+    query = session.query(
+        Habit.name,
+        Habit.target_operation_type,
+        Habit.target_range,
+        Habit.target_units,
+        Habit.target_unit_type,
+        Habit.created_at,
+    )
     if active_only:
         query = query.filter(Habit.is_active == True)
 
     for habit in query.all():
-        print(f"{habit.name} (created on {habit.created_at})")
+        output = f"{habit.name}: "
+        if habit.target_operation_type and habit.target_range and habit.target_units:
+            output += f"{habit.target_operation_type.value.replace('_', ' ')} {habit.target_units} {habit.target_unit_type.value if habit.target_unit_type else ''} {habit.target_range.value if habit.target_range else ''}"
+        print(f"{output} (created on {habit.created_at.strftime('%Y-%m-%d')})")
 
 
 def create_habit(
@@ -21,7 +29,7 @@ def create_habit(
     target_range=None,
 ):
     habit = Habit(
-        name=name,
+        name=name.strip().upper(),
         target_units=target_units,
         target_unit_type=UnitType(target_unit_type) if target_unit_type else None,
         target_operation_type=(
@@ -48,7 +56,7 @@ def _select_enum(prompt, enum_class):
     options = list(enum_class)
     print(prompt)
     for i, option in enumerate(options, 1):
-        print(f"  {i}. {option.value}")
+        print(f"  ({i}) {option.value}")
     print("Hit enter to skip")
     choice = input("Select a number: ").strip()
     if not choice or choice == "":
