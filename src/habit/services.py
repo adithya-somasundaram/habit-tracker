@@ -1,11 +1,15 @@
+from sqlalchemy import Date
+
 from habit.model import Habit, UnitType, OperationType, RangeType
 
 
-def get_active_habits(session, active_only=True):
-    query = session.query(Habit)
+def view_habits(session, active_only=True):
+    query = session.query(Habit.name, Habit.created_at.cast(Date))
     if active_only:
         query = query.filter(Habit.is_active == True)
-    return query.all()
+
+    for habit in query.all():
+        print(f"{habit.name} (created on {habit.created_at})")
 
 
 def create_habit(
@@ -26,6 +30,16 @@ def create_habit(
         target_range=RangeType(target_range) if target_range else None,
     )
     session.add(habit)
+    session.commit()
+    return habit
+
+
+def deactivate_habit(session, habit_name):
+    habit = session.query(Habit).filter(Habit.name == habit_name).first()
+    if not habit:
+        print(f"No habit found with name {habit_name}.")
+        return None
+    habit.is_active = False
     session.commit()
     return habit
 
