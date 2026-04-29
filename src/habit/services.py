@@ -1,19 +1,19 @@
 from src.habit.model import Habit, UnitType, OperationType, RangeType
 
 
-def view_habits(session, active_only=True):
-    query = session.query(
-        Habit.name,
-        Habit.target_operation_type,
-        Habit.target_range,
-        Habit.target_units,
-        Habit.target_unit_type,
-        Habit.created_at,
-    )
+def get_habit_mapping(session, active_only=True):
+    habits = session.query(Habit)
     if active_only:
-        query = query.filter(Habit.is_active == True)
+        habits = habits.filter(Habit.is_active == True)
 
-    for habit in query.all():
+    habits = habits.all()
+    return {i: habit for i, habit in enumerate(habits, 1)}
+
+
+def view_habits(session, active_only=True):
+    habit_map = get_habit_mapping(session, active_only)
+
+    for habit in habit_map.values():
         output = f"{habit.name}: "
         if habit.target_operation_type and habit.target_range and habit.target_units:
             output += f"{habit.target_operation_type.value.replace('_', ' ')} {habit.target_units} {habit.target_unit_type.value if habit.target_unit_type else ''} {habit.target_range.value if habit.target_range else ''}"
