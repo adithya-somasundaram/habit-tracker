@@ -16,6 +16,7 @@ class UnitType(enum.Enum):
     KILOMETERS = "kilometers"
     PAGES = "pages"
     GRAMS = "grams"
+    REPS = "reps"
 
 
 class OperationType(enum.Enum):
@@ -26,13 +27,21 @@ class OperationType(enum.Enum):
     LESS_THAN_OR_EQUAL_TO = "less_than_or_equal_to"
 
 
+class RangeType(enum.Enum):
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+    YEARLY = "yearly"
+
+
 class Habit(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
 
     target_units = Column(Integer, nullable=True, default=1)
-    unit_type = Column(Enum(UnitType), nullable=True)
-    operation_type = Column(Enum(OperationType), nullable=True)
+    target_unit_type = Column(Enum(UnitType), nullable=True)
+    target_operation_type = Column(Enum(OperationType), nullable=True)
+    target_range = Column(Enum(RangeType), nullable=True)
 
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, default=datetime.now())
