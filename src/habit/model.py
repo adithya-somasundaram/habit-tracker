@@ -20,7 +20,7 @@ class UnitType(enum.Enum):
 
 
 class OperationType(enum.Enum):
-    GREATER_THAN = "greater_than"
+    GREATER_THAN = "greater_than"  # exists
     LESS_THAN = "less_than"
     EQUAL_TO = "equal_to"
     GREATER_THAN_OR_EQUAL_TO = "greater_than_or_equal_to"  # exists
