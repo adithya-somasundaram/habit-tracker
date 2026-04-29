@@ -13,4 +13,3 @@ class Activity(db.Model):
     description = Column(String(255), nullable=True)
     habit_id = Column(ForeignKey("habit.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.now())
-    updated_at = Column(DateTime, default=datetime.now())
