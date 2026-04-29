@@ -30,28 +30,37 @@ def create_habit(
     return habit
 
 
+def _select_enum(prompt, enum_class):
+    options = list(enum_class)
+    print(prompt)
+    for i, option in enumerate(options, 1):
+        print(f"  {i}. {option.value}")
+    print("Hit enter to skip")
+    choice = input("Select a number: ").strip()
+    if not choice or choice == "":
+        return None
+    if choice.isdigit() and 1 <= int(choice) <= len(options):
+        return options[int(choice) - 1].value
+    print(f"Invalid selection, skipping.")
+    return None
+
+
 def create_habit_input(session):
-    name = input("Enter habit name: ")
-    if not name or name == "":
+    name = input("Enter habit name: ").strip()
+    if not name:
         print("Habit name cannot be empty.")
         return None
 
-    target_units = input("Enter target units (optional): ")
-    target_unit_type = input(
-        f"Enter target unit type ({', '.join([e.value for e in UnitType])}) (optional): "
-    )
-    target_operation_type = input(
-        f"Enter target operation type ({', '.join([e.value for e in OperationType])}) (optional): "
-    )
-    target_range = input(
-        f"Enter target range ({', '.join([e.value for e in RangeType])}) (optional): "
-    )
+    target_units = input("Enter target units (optional): ").strip()
+    target_unit_type = _select_enum("Select target unit type:", UnitType)
+    target_operation_type = _select_enum("Select target operation type:", OperationType)
+    target_range = _select_enum("Select target range:", RangeType)
 
     return create_habit(
         session,
         name,
         int(target_units) if target_units else None,
-        target_unit_type if target_unit_type else None,
-        target_operation_type if target_operation_type else None,
-        target_range if target_range else None,
+        target_unit_type,
+        target_operation_type,
+        target_range,
     )
