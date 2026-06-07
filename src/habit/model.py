@@ -17,6 +17,7 @@ class UnitType(enum.Enum):
     PAGES = "pages"
     GRAMS = "grams"
     CALORIES = "calories"
+    MG = "mg"
 
 
 class OperationType(enum.Enum):
