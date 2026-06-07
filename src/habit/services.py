@@ -1,4 +1,9 @@
+from rich.console import Console
+from rich.table import Table
+
 from src.habit.model import Habit, UnitType, OperationType, RangeType
+
+console = Console()
 
 
 def get_habit_mapping(session, active_only=True):
@@ -86,3 +91,33 @@ def create_habit_input(session):
         target_operation_type,
         target_range,
     )
+
+
+def _render_habits_table(habits):
+    table = Table(title="Habits added")
+    table.add_column("Name")
+    table.add_column("Target")
+
+    for habit in habits:
+        target = ""
+        if habit.target_operation_type and habit.target_range and habit.target_units:
+            unit = habit.target_unit_type.value if habit.target_unit_type else ""
+            target = f"{habit.target_operation_type.value.replace('_', ' ')} {habit.target_units} {unit} {habit.target_range.value}"
+        table.add_row(habit.name, target)
+
+    return table
+
+
+def create_habits_bulk_input(session):
+    created = []
+    while True:
+        habit = create_habit_input(session)
+        if habit:
+            created.append(habit)
+            console.print(_render_habits_table(created))
+
+        again = input("Add another habit? (y/n): ").strip().lower()
+        if again != "y":
+            break
+
+    return created
