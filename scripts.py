@@ -8,5 +8,6 @@ db.create_all()
 print(
     "Available functions:\n"
     "  - view_habits(session): list your habits\n"
-    "  - create_habits_bulk_input(session): add multiple habits in one go"
+    "  - create_habits_bulk_input(session): add multiple habits in one go\n"
+    "  - bulk_create_activities(session): log activities for a date across all habits"
 )
