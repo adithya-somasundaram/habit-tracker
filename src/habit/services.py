@@ -2,6 +2,7 @@ from rich.console import Console
 from rich.table import Table
 
 from src.habit.model import Habit, UnitType, OperationType, RangeType
+from src.helpers import exit_keys
 
 console = Console()
 
@@ -73,7 +74,11 @@ def _select_enum(prompt, enum_class):
 
 
 def create_habit_input(session):
-    name = input("Enter habit name: ").strip()
+    name = input(
+        f"Enter habit name (or {'/'.join(sorted(exit_keys))} to finish): "
+    ).strip()
+    if name.lower() in exit_keys:
+        return "exit"
     if not name:
         print("Habit name cannot be empty.")
         return None
@@ -112,12 +117,10 @@ def create_habits_bulk_input(session):
     created = []
     while True:
         habit = create_habit_input(session)
+        if habit == "exit":
+            break
         if habit:
             created.append(habit)
             console.print(_render_habits_table(created))
-
-        again = input("Add another habit? (y/n): ").strip().lower()
-        if again != "y":
-            break
 
     return created
