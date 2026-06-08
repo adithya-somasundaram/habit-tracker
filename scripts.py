@@ -4,3 +4,9 @@ from src.activity.services import *
 
 app.app_context().push()
 db.create_all()
+
+print(
+    "Available functions:\n"
+    "  - view_habits(session): list your habits\n"
+    "  - create_habits_bulk_input(session): add multiple habits in one go"
+)
