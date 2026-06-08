@@ -1,11 +1,12 @@
 from app import *
-from src.habit.services import (
-    create_habit_input,
-    create_habits_bulk_input,
-    view_habits,
-    deactivate_habit,
-)
-from src.activity.services import create_activity_input
+from src.habit.services import *
+from src.activity.services import *
 
 app.app_context().push()
 db.create_all()
+
+print(
+    "Available functions:\n"
+    "  - view_habits(session): list your habits\n"
+    "  - create_habits_bulk_input(session): add multiple habits in one go"
+)
