@@ -48,10 +48,12 @@ def create_activity_input(session):
     return create_activity(session, date, habit_id, units, description)
 
 
-def create_activities_bulk_input(session):
+def bulk_create_activities(session):
     from src.habit.infra import get_habit_mapping
 
-    print("Let's log some activities! Enter 'quit' or 'exit' at any time to save and exit.")
+    print(
+        "Let's log some activities! Enter 'quit' or 'exit' at any time to save and exit."
+    )
 
     date_str = input(
         "Enter activity date (YYYY-MM-DD) - Enter to set to today: "
