@@ -13,7 +13,7 @@ def view_habits(session, active_only=True):
 
     for habit in habit_map.values():
         output = f"{habit.name}: "
-        if habit.target_operation_type and habit.target_range and habit.target_units:
+        if habit.target_operation_type and habit.target_range and habit.target_units is not None:
             output += f"{habit.target_operation_type.value.replace('_', ' ')} {habit.target_units} {habit.target_unit_type.value if habit.target_unit_type else ''} {habit.target_range.value if habit.target_range else ''}"
         print(f"{output} (created on {habit.created_at.strftime('%Y-%m-%d')})")
 

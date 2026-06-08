@@ -23,7 +23,7 @@ def make_habit_creation_panel(session):
     habit_table.add_column("Target")
     for habit in habit_map.values():
         target = ""
-        if habit.target_operation_type and habit.target_range and habit.target_units:
+        if habit.target_operation_type and habit.target_range and habit.target_units is not None:
             unit = habit.target_unit_type.value if habit.target_unit_type else ""
             target = f"{habit.target_operation_type.value.replace('_', ' ')} {habit.target_units} {unit} {habit.target_range.value}"
         habit_table.add_row(habit.name, target)
