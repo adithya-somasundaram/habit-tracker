@@ -4,6 +4,7 @@ from src.habit.infra import get_habit_mapping, create_habit, deactivate_habit
 from src.habit.model import UnitType, OperationType, RangeType
 from src.habit.view import make_habit_creation_panel
 from src.helpers import exit_keys
+from src.view_helpers import format_habit_target
 
 console = Console()
 
@@ -12,9 +13,7 @@ def view_habits(session, active_only=True):
     habit_map = get_habit_mapping(session, active_only)
 
     for habit in habit_map.values():
-        output = f"{habit.name}: "
-        if habit.target_operation_type and habit.target_range and habit.target_units is not None:
-            output += f"{habit.target_operation_type.value.replace('_', ' ')} {habit.target_units} {habit.target_unit_type.value if habit.target_unit_type else ''} {habit.target_range.value if habit.target_range else ''}"
+        output = f"{habit.name}: {format_habit_target(habit)}"
         print(f"{output} (created on {habit.created_at.strftime('%Y-%m-%d')})")
 
 
