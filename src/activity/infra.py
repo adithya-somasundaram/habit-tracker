@@ -35,7 +35,8 @@ def get_period_progress(session, habit, on_date):
         Activity.date <= end,
     )
 
-    if habit.target_unit_type:
+    has_units = query.filter(Activity.units.isnot(None)).count() > 0
+    if has_units:
         total = query.with_entities(func.coalesce(func.sum(Activity.units), 0)).scalar()
     else:
         total = query.count()
